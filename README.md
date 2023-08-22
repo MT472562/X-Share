@@ -19,12 +19,12 @@ MITライセンスに基づき、このプロジェクトのコードや成果�
 
 ## お問い合わせ
 
-基本的にXに問い合わせをしていただけると、早急に返信が可能です。
-[まぎらわしぃ](https://twitter.com/magirawashili)
-[まぎらわしぃ@magirawashiliをフォロー]（https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Efollow%7Ctwgr%5Emagirawashili&screen_name=magirawashili）
+基本的にXに問い合わせをしていただけると、早めの返信が可能です。
+[まぎらわしぃ](https://twitter.com/magirawashili)  
+
 質問や提案がある場合は、お気軽に[Issues](https://github.com/MT472562/X-Share/issues)セクションにてお知らせください。  
 フォーラムを通じてコミュニケーションを図ることができます。
 
 
 ---
-X-Share まぎらわしぃ
+X-Share まぎらわしぃ@magirawashili
