@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden - IP Address Restriction</title>
+    <style>
+        .help-icon {
+            font-size: 60px;
+            color: #3498db;
+            cursor: pointer;
+        }
+        .help-content {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+        }
+
+        .error-code {
+            font-size: 96px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .error-message {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .ip-restriction-info {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="error-code">403</div>
+    <div class="error-message">Forbidden - IP Address Restriction</div>
+    <div class="ip-restriction-info">Access to this resource is denied due to IP address restrictions.</div>
+</div>
+<div class="container">
+    <div class="help-icon" onclick="toggleHelp()">?</div>
+    <div class="help-content" id="helpContent">
+        システムへのアクセスは許可されたIPアドレス以外からの一切のアクセスを拒否します。
+    </div>
+</div>
+<script>
+    function toggleHelp() {
+        var helpContent = document.getElementById('helpContent');
+        if (helpContent.style.display === 'none' || helpContent.style.display === '') {
+            helpContent.style.display = 'block';
+        } else {
+            helpContent.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>
