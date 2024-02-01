@@ -1,5 +1,8 @@
+# pip install line-bot-sdk
+# pip install selenium
+# pip install chromedriver-binary==バージョン番号
+# chromedriverのダウンロードでエラーが起きたら、表示されている一番近いバージョン番号を入力します
 import time
-
 from linebot import LineBotApi
 from linebot.exceptions import LineBotApiError
 from linebot.models import TextSendMessage
