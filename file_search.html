@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ファイル検索</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="search_file_select">
+        <div class="year">
+            <input type="button" id="y_2024" class="year_buttons" value="2024年" onclick="year_get('2024')">
+            <input type="button" id="y_2025" class="year_buttons" value="2025年" onclick="year_get('2025')">
+            <input type="button" id="y_2026" class="year_buttons" value="2026年" onclick="year_get('2026')">
+            <input type="button" id="y_2027" class="year_buttons" value="2027年" onclick="year_get('2027')">
+            <input type="button" id="y_2099" class="year_buttons" value="その他" onclick="year_get('2099')">
+        </div>
+        <div class="semester">
+            <input type="button" id="s_1" class="semester_buttons" value="1S-1,2Q" onclick="semester_get('1')">
+            <input type="button" id="s_2" class="semester_buttons" value="2S-3,4Q" onclick="semester_get('2')">
+        </div>
+        <div class="day_of_week">
+            <input type="button" id="d_o_w_1" class="d_o_w_buttons" value="月曜日" onclick="day_of_week_get('1')">
+            <input type="button" id="d_o_w_2" class="d_o_w_buttons" value="火曜日" onclick="day_of_week_get('2')">
+            <input type="button" id="d_o_w_3" class="d_o_w_buttons" value="水曜日" onclick="day_of_week_get('3')">
+            <input type="button" id="d_o_w_4" class="d_o_w_buttons" value="木曜日" onclick="day_of_week_get('4')">
+            <input type="button" id="d_o_w_5" class="d_o_w_buttons" value="金曜日" onclick="day_of_week_get('5')">
+            <input type="button" id="d_o_w_6" class="d_o_w_buttons" value="土曜日" onclick="day_of_week_get('6')">
+        </div>
+
+        <div class="limit">
+            <input type="button" id="l_1" class="limit_buttons" value="1限目" onclick="limit_get('1')">
+            <input type="button" id="l_2" class="limit_buttons" value="2限目" onclick="limit_get('2')">
+            <input type="button" id="l_3" class="limit_buttons" value="3限目" onclick="limit_get('3')">
+            <input type="button" id="l_4" class="limit_buttons" value="4限目" onclick="limit_get('4')">
+            <input type="button" id="l_5" class="limit_buttons" value="5限目" onclick="limit_get('5')">
+            <input type="button" id="l_6" class="limit_buttons" value="6限目" onclick="limit_get('6')">
+        </div>
+    </div>
+    <div class="options">
+        <h2>FilePath</h2>
+        <input type="text" id="path" class="text_input">
+        <input type="button" class="copy_button" onclick="copyTextToClipboard('path')" value="Copy">
+
+        <h2>CreateDirectory</h2>
+        <input type="text" id="win_make" class="text_input">
+        <input type="button" class="copy_button" onclick="copyTextToClipboard('win_make')" value="Copy">
+
+    </div>
+    <div id="data">
+        <div>
+            <p>授業名</p>
+            <input type="text" id="title" class="input_data"><br>
+            <p>担当教員</p>
+            <input type="text" id="teacher" class="input_data"><br>
+            <p>教室</p>
+            <input type="text" id="class" class="input_data"><br>
+        </div>
+        <textarea name="" id="note" class="input_data"></textarea>
+        <input type="button"value="set" id="set_button">
+    </div>
+    <script>
+        var Year;
+        var Semester;
+        var Day_of_week;
+        var Limit;
+        var Link;
+
+        function setActiveButton(buttons, id) {
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.backgroundColor = "#ffd7c6";
+            }
+            document.getElementById(id).style.backgroundColor = "#ffb3e6";
+        }
+
+        function year_get(year) {
+            setActiveButton(document.getElementsByClassName("year_buttons"), "y_" + year);
+            Year = year;
+            set_path();
+        }
+
+        function semester_get(semester) {
+            setActiveButton(document.getElementsByClassName("semester_buttons"), "s_" + semester);
+            Semester = semester;
+            set_path();
+        }
+
+        function day_of_week_get(d_o_w) {
+            setActiveButton(document.getElementsByClassName("d_o_w_buttons"), "d_o_w_" + d_o_w);
+            Day_of_week = d_o_w;
+            set_path();
+        }
+
+        function limit_get(limit) {
+            setActiveButton(document.getElementsByClassName("limit_buttons"), "l_" + limit);
+            Limit = limit;
+            set_path();
+        }
+
+        function set_path() {
+            var link = "C:/Users/User/univercity/" + Year + "/" + Semester + "/" + Day_of_week + "/" + Limit + "/";
+            if (Year == 2099) {
+                var link = "C:/Users/User/univercity/" + Year + "/";
+            }
+            Link = link;
+            console.log(Link);
+            document.getElementById('path').value = Link;
+            var correctedPath = Link.replace(/\//g, "\\");
+            var mkdirCommand = `mkdir "${correctedPath}" && icacls ${correctedPath} /grant User:(OI)(CI)F`;
+            document.getElementById('win_make').value = mkdirCommand;
+
+
+        }
+        function copyTextToClipboard(data) {
+            var text = document.getElementById(data).value;
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                })
+                .catch(err => {
+                });
+        }
+        function l_coma(hours, minutes) {
+            if (hours < 10 || (hours === 10 && minutes < 40)) {
+                return 1;
+            } else if (hours < 12 || (hours === 12 && minutes < 40)) {
+                return 2;
+            } else if (hours < 15 || (hours === 15 && minutes < 20)) {
+                return 3;
+            } else if (hours < 17 || (hours === 17 && minutes < 20)) {
+                return 4;
+            } else if (hours < 19 || (hours === 19 && minutes < 20)) {
+                return 5;
+            } else if (hours < 21 || (hours === 21 && minutes < 10)) {
+                return 6;
+            } else {
+                return 1;
+            }
+        }
+        function auto_input() {
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+            const date = currentDate.getDate();
+            const hours = currentDate.getHours();
+            const minutes = currentDate.getMinutes();
+            const dayIndex = currentDate.getDay();
+
+
+            document.getElementById(`y_${year}`).click();
+
+            if (month >= 4 && month <= 7) {
+                document.getElementById("s_1").click();
+            } else {
+                document.getElementById("s_2").click();
+            }
+
+            if (dayIndex == 0) {
+                ;
+            } else {
+                document.getElementById(`d_o_w_${dayIndex}`).click();
+            }
+
+            var l_a = l_coma(hours, minutes);
+            console.log(l_a)
+            document.getElementById(`l_${l_a}`).click();
+        }
+        auto_input();
+
+    </script>
+</body>
+
+</html>
