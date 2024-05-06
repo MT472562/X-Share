@@ -20,7 +20,7 @@ MITライセンスに基づき、このプロジェクトのコードや成果�
 ## お問い合わせ
 
 基本的にXに問い合わせをしていただけると、早めの返信が可能です。  
-問い合わせ先　[まぎらわしぃ](https://twitter.com/magirawashili)  
+問い合わせ先　[まぎらわしぃ](https://twitter.com/magirawashili_)  
 
 質問や提案がある場合は、お気軽に[Issues](https://github.com/MT472562/X-Share/issues)セクションにてお知らせください。  
 フォーラムを通じてコミュニケーションを図ることができます。
