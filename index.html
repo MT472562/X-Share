@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>しかのこ早打ち</title>
+</head>
+
+<body>
+    <div>
+        <p>「しかのこのこのここしたんたん」を早く打つゲームです。<br>
+            入力欄をクリックしたら計測が始まります。</p>
+    </div>
+    <div>
+        <input type="text" maxlength="14" onclick="startTimer()" id="input">
+        <button onclick="stopTimer()">打ち終わったぬん！</button>
+        <div id="time-display">0 秒</div>
+        <button onclick="resetTimer()">もう一回</button>
+        <button id="tweet-button" onclick="tweet()">ツイートする</button>
+    </div>
+</body>
+<script>
+    let startTime;
+    let timerInterval;
+
+    function startTimer() {
+        if (timerInterval) return;
+
+        startTime = Date.now();
+        timerInterval = setInterval(updateTime, 100);
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        const text = document.getElementById('input').value;
+        if(text=='しかのこのこのここしたんたん'){
+            alert('正解')
+        }
+    }
+
+    function resetTimer() {
+        stopTimer();
+        document.getElementById('time-display').textContent = "0 秒";
+        document.getElementById('input').value = '';
+    }
+
+    function updateTime() {
+        const currentTime = Date.now();
+        const elapsedTime = (currentTime - startTime) / 1000;
+        document.getElementById('time-display').textContent = `${elapsedTime.toFixed(1)} 秒`;
+    }
+    function tweet() {
+        const timerMessage = document.getElementById('time-display').textContent;
+        const message =`「しかのこのこのここしたんたん」早打ちゲームで${timerMessage}でクリアできました！ 	http://magenta.cocotte.jp/shika/`
+        const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`;
+        window.open(tweetUrl, '_blank');
+    }
+
+</script>
+
+</html>
