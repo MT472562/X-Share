@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勉強してください！！</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa; /* 淡い青の背景色 */
+            color: #01579b; /* 濃い青のテキスト色 */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0288d1; /* メインの青色 */
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        video, canvas {
+            display: block;
+            margin: 20px auto;
+            border: 2px solid #0288d1; /* メインの青色のボーダー */
+            border-radius: 10px; /* 角を丸くする */
+        }
+
+        #playbackVideo {
+            margin-top: 30px;
+        }
+
+        footer {
+            background-color: #0288d1; /* メインの青色 */
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        button {
+            background-color: #0288d1; /* メインの青色 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0277bd; /* ホバー時の少し濃い青色 */
+        }
+
+        @media (max-width: 640px) {
+            video, canvas, #playbackVideo {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>勉強してください！！</header>
+
+<video id="inputVideo" width="640" height="480" autoplay style="display: none"></video>
+<canvas id="outputCanvas" width="640" height="480"></canvas>
+<video id="playbackVideo" width="640" height="480" controls>
+    <source src="video.mov">
+    何してるんですか！！Videoタグが使えないです！！！
+</video>
+
+<script>
+    async function setupCamera() {
+        const video = document.getElementById('inputVideo');
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+
+        return new Promise((resolve) => {
+            video.onloadedmetadata = () => {
+                resolve(video);
+            };
+        });
+    }
+
+    async function main() {
+        const video = await setupCamera();
+        video.play();
+
+        const canvas = document.getElementById('outputCanvas');
+        const ctx = canvas.getContext('2d');
+        const playbackVideo = document.getElementById('playbackVideo');
+        let penWasHeld = false;
+
+        const hands = new Hands({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+        });
+
+        hands.setOptions({
+            maxNumHands: 1,
+            modelComplexity: 1,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+
+        hands.onResults(results => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // デバック用
+            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+                for (const landmarks of results.multiHandLandmarks) {
+                    ctx.strokeStyle = 'red';
+                    ctx.lineWidth = 2;
+                    for (let i = 0; i < landmarks.length; i++) {
+                        const x = landmarks[i].x * canvas.width;
+                        const y = landmarks[i].y * canvas.height;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                        if (i > 0) {
+                            const prevX = landmarks[i - 1].x * canvas.width;
+                            const prevY = landmarks[i - 1].y * canvas.height;
+                            ctx.moveTo(prevX, prevY);
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    const thumbTip = landmarks[4];
+                    const indexTip = landmarks[8];
+                    const distance = Math.sqrt(
+                        Math.pow(thumbTip.x - indexTip.x, 2) + Math.pow(thumbTip.y - indexTip.y, 2)
+                    );
+
+                    if (distance < 0.1) { // しきい値をしていしますここで変更してください！
+                        console.log("ペンを持っています");
+                        penWasHeld = true;
+                    } else {
+                        console.log("ペンを持っていません");
+                        if (penWasHeld) {
+                            playbackVideo.play();
+                            penWasHeld = false;
+                        }
+                    }
+                }
+            }
+        });
+
+        const camera = new Camera(video, {
+            onFrame: async () => {
+                await hands.send({ image: video });
+            },
+            width: 640,
+            height: 480
+        });
+
+        camera.start();
+    }
+
+    main();
+</script>
+</body>
+</html>
