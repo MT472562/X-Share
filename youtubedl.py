@@ -1,9 +1,9 @@
 import yt_dlp as youtube_dl
-print("URLを入力してください　LISTが入っているとリストごとダウンロードされます")
+print("URLを入力してください")
 uri=input()
 ydl_opts = {
     'verbose': True,
-    'noplaylist': True  # リストをダウンロードしないようにするオプション
+    'noplaylist': True
 }
 
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
