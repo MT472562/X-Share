@@ -90,7 +90,7 @@ void SendMessage() {
     </div>
     <script>
         function fetchData() {
-            const url = 'http://192.168.***.***/api';
+            const url = '/api';
             const timeout = 30000;
             const fetchPromise = fetch(url).then(response => response.json());
             const timeoutPromise = new Promise((_, reject) =>
